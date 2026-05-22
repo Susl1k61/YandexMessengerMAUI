@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Файл: App.xaml -->
+<!-- Глобальные ресурсы, стили и словари ресурсов приложения -->
+<Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converters="clr-namespace:YandexMessengerMAUI.Converters"
+             x:Class="YandexMessengerMAUI.App">
+    <Application.Resources>
+        <ResourceDictionary>
+
+            <!-- ─── Конвертеры (доступны глобально) ─────────────────────── -->
+            <converters:BoolToVisibilityConverter x:Key="BoolToVisibility" />
+            <converters:InverseBoolConverter x:Key="InverseBool" />
+            <converters:MessageAlignmentConverter x:Key="MessageAlignment" />
+            <converters:MessageBubbleColorConverter x:Key="BubbleColor" />
+            <converters:MessageTextColorConverter x:Key="BubbleTextColor" />
+            <converters:StringToBoolConverter x:Key="StringToBool" />
+            <converters:UnreadCountVisibilityConverter x:Key="UnreadCountVisibility" />
+            <converters:OnlineStatusColorConverter x:Key="OnlineStatusColor" />
+
+            <!-- ─── Цвета ─────────────────────────────────────────────────── -->
+            <Color x:Key="BackgroundDark">#1a1a2e</Color>
+            <Color x:Key="BackgroundMid">#16213e</Color>
+            <Color x:Key="BackgroundCard">#2A2A4A</Color>
+            <Color x:Key="AccentGreen">#4ECCA3</Color>
+            <Color x:Key="TextPrimary">#E0E0E0</Color>
+            <Color x:Key="TextSecondary">#888888</Color>
+            <Color x:Key="Separator">#0f3460</Color>
+            <Color x:Key="ErrorRed">#E74C3C</Color>
+
+            <!-- ─── Стили ─────────────────────────────────────────────────── -->
+
+            <!-- Страница -->
+            <Style TargetType="ContentPage">
+                <Setter Property="BackgroundColor" Value="{StaticResource BackgroundDark}" />
+            </Style>
+
+            <!-- Заголовок страницы -->
+            <Style x:Key="PageTitleStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="20" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="TextColor" Value="{StaticResource AccentGreen}" />
+            </Style>
+
+            <!-- Основной текст -->
+            <Style x:Key="PrimaryTextStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource TextPrimary}" />
+                <Setter Property="FontSize" Value="15" />
+            </Style>
+
+            <!-- Второстепенный текст -->
+            <Style x:Key="SecondaryTextStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource TextSecondary}" />
+                <Setter Property="FontSize" Value="12" />
+            </Style>
+
+            <!-- Кнопка (основная) -->
+            <Style x:Key="PrimaryButtonStyle" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="{StaticResource AccentGreen}" />
+                <Setter Property="TextColor" Value="{StaticResource BackgroundDark}" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="CornerRadius" Value="10" />
+                <Setter Property="Padding" Value="20,12" />
+                <Setter Property="FontSize" Value="15" />
+            </Style>
+
+            <!-- Кнопка (вторичная) -->
+            <Style x:Key="SecondaryButtonStyle" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="Transparent" />
+                <Setter Property="TextColor" Value="{StaticResource AccentGreen}" />
+                <Setter Property="BorderColor" Value="{StaticResource AccentGreen}" />
+                <Setter Property="BorderWidth" Value="1" />
+                <Setter Property="CornerRadius" Value="10" />
+                <Setter Property="Padding" Value="20,12" />
+                <Setter Property="FontSize" Value="14" />
+            </Style>
+
+            <!-- Поле ввода -->
+            <Style TargetType="Entry">
+                <Setter Property="BackgroundColor" Value="{StaticResource BackgroundCard}" />
+                <Setter Property="TextColor" Value="{StaticResource TextPrimary}" />
+                <Setter Property="PlaceholderColor" Value="{StaticResource TextSecondary}" />
+            </Style>
+
+            <!-- Карточка диалога -->
+            <Style x:Key="DialogCardStyle" TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="{StaticResource BackgroundMid}" />
+                <Setter Property="BorderColor" Value="{StaticResource Separator}" />
+                <Setter Property="CornerRadius" Value="0" />
+                <Setter Property="Padding" Value="14,10" />
+                <Setter Property="HasShadow" Value="False" />
+            </Style>
+
+            <!-- Индикатор загрузки -->
+            <Style TargetType="ActivityIndicator">
+                <Setter Property="Color" Value="{StaticResource AccentGreen}" />
+            </Style>
+
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

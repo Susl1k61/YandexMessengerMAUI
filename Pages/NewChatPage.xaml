@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Файл: Pages/NewChatPage.xaml -->
+<!-- Поиск пользователя для нового чата -->
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="YandexMessengerMAUI.Pages.NewChatPage"
+             Title="Новый чат">
+
+    <VerticalStackLayout Padding="20" Spacing="16">
+
+        <!-- Строка поиска -->
+        <Label Text="Найти пользователя"
+               Style="{StaticResource PrimaryTextStyle}"
+               FontAttributes="Bold" />
+
+        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+            <Frame Grid.Column="0"
+                   BackgroundColor="{StaticResource BackgroundCard}"
+                   BorderColor="{StaticResource Separator}"
+                   CornerRadius="10" Padding="4,0">
+                <Entry Placeholder="@username"
+                       Text="{Binding SearchUsername}"
+                       ReturnCommand="{Binding SearchCommand}"
+                       Keyboard="Text" />
+            </Frame>
+            <Button Grid.Column="1"
+                    Text="Найти"
+                    Style="{StaticResource PrimaryButtonStyle}"
+                    Command="{Binding SearchCommand}" />
+        </Grid>
+
+        <!-- Индикатор -->
+        <ActivityIndicator IsRunning="{Binding IsBusy}"
+                           IsVisible="{Binding IsBusy}" />
+
+        <!-- Ошибка -->
+        <Frame BackgroundColor="#3A1515"
+               BorderColor="{StaticResource ErrorRed}"
+               CornerRadius="8" Padding="14,10"
+               IsVisible="{Binding HasError}">
+            <Label Text="{Binding ErrorMessage}"
+                   TextColor="{StaticResource ErrorRed}"
+                   FontSize="13" />
+        </Frame>
+
+        <!-- Найденный пользователь -->
+        <Frame BackgroundColor="{StaticResource BackgroundMid}"
+               BorderColor="{StaticResource Separator}"
+               CornerRadius="12"
+               Padding="16"
+               IsVisible="{Binding HasFoundUser}">
+            <Grid ColumnDefinitions="48,*,Auto" ColumnSpacing="12">
+
+                <!-- Аватар -->
+                <Frame Grid.Column="0"
+                       BackgroundColor="{StaticResource BackgroundCard}"
+                       BorderColor="{StaticResource Separator}"
+                       CornerRadius="24"
+                       WidthRequest="48" HeightRequest="48"
+                       Padding="0" HasShadow="False">
+                    <Label Text="{Binding FoundUser.Username[0]}"
+                           TextColor="{StaticResource AccentGreen}"
+                           FontAttributes="Bold"
+                           FontSize="20"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center" />
+                </Frame>
+
+                <!-- Имя и статус -->
+                <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="3">
+                    <Label Text="{Binding FoundUser.DisplayTitle}"
+                           Style="{StaticResource PrimaryTextStyle}"
+                           FontAttributes="Bold" />
+                    <Label Text="{Binding FoundUser.OnlineStatus}"
+                           TextColor="{Binding FoundUser.IsOnline, Converter={StaticResource OnlineStatusColor}}"
+                           FontSize="12" />
+                </VerticalStackLayout>
+
+                <!-- Кнопка открыть чат -->
+                <Button Grid.Column="2"
+                        Text="💬"
+                        BackgroundColor="{StaticResource AccentGreen}"
+                        TextColor="{StaticResource BackgroundDark}"
+                        CornerRadius="20"
+                        WidthRequest="44" HeightRequest="44"
+                        Padding="0"
+                        FontSize="18"
+                        Command="{Binding OpenChatCommand}" />
+            </Grid>
+        </Frame>
+
+    </VerticalStackLayout>
+</ContentPage>

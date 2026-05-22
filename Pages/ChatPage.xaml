@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Файл: Pages/ChatPage.xaml -->
+<!-- Экран переписки с конкретным пользователем -->
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:YandexMessengerMAUI.Models"
+             x:Class="YandexMessengerMAUI.Pages.ChatPage">
+
+    <!-- Заголовок: имя собеседника + статус -->
+    <NavigationPage.TitleView>
+        <VerticalStackLayout VerticalOptions="Center" Margin="0,2">
+            <Label Text="{Binding RecipientDisplayName}"
+                   Style="{StaticResource PrimaryTextStyle}"
+                   FontAttributes="Bold"
+                   FontSize="16" />
+            <Label Text="{Binding RecipientStatusText}"
+                   FontSize="11"
+                   TextColor="{Binding IsRecipientOnline, Converter={StaticResource OnlineStatusColor}}" />
+        </VerticalStackLayout>
+    </NavigationPage.TitleView>
+
+    <Grid RowDefinitions="*,Auto">
+
+        <!-- Список сообщений -->
+        <CollectionView Grid.Row="0"
+                        x:Name="MessagesList"
+                        ItemsSource="{Binding Messages}"
+                        ItemsUpdatingScrollMode="KeepLastItemInView"
+                        Margin="8,0">
+
+            <!-- Кнопка «загрузить ещё» вверху -->
+            <CollectionView.Header>
+                <Button Text="Загрузить ещё"
+                        Style="{StaticResource SecondaryButtonStyle}"
+                        Margin="32,8"
+                        FontSize="12"
+                        Command="{Binding LoadMoreCommand}" />
+            </CollectionView.Header>
+
+            <CollectionView.EmptyView>
+                <Label Text="Нет сообщений. Напишите первым!"
+                       Style="{StaticResource SecondaryTextStyle}"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"
+                       Margin="0,40" />
+            </CollectionView.EmptyView>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:ChatMessage">
+                    <!-- Пузырь сообщения -->
+                    <Grid Margin="8,3">
+                        <Frame BackgroundColor="{Binding IsMine, Converter={StaticResource BubbleColor}}"
+                               BorderColor="Transparent"
+                               CornerRadius="14"
+                               Padding="12,8"
+                               MaximumWidthRequest="300"
+                               HasShadow="False"
+                               HorizontalOptions="{Binding IsMine, Converter={StaticResource MessageAlignment}}">
+                            <VerticalStackLayout Spacing="4">
+                                <!-- Текст сообщения -->
+                                <Label Text="{Binding Text}"
+                                       TextColor="{Binding IsMine, Converter={StaticResource BubbleTextColor}}"
+                                       FontSize="15"
+                                       LineBreakMode="WordWrap" />
+                                <!-- Время и статус -->
+                                <Label FontSize="10"
+                                       HorizontalOptions="End"
+                                       TextColor="{Binding IsMine, Converter={StaticResource BubbleTextColor}}"
+                                       Opacity="0.7">
+                                    <Label.Text>
+                                        <MultiBinding StringFormat="{}{0}  {1}">
+                                            <Binding Path="TimeLabel" />
+                                            <Binding Path="IsRead" StringFormat="{}{0}" />
+                                        </MultiBinding>
+                                    </Label.Text>
+                                </Label>
+                            </VerticalStackLayout>
+                        </Frame>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!-- Нижняя панель ввода -->
+        <Grid Grid.Row="1"
+              ColumnDefinitions="*,Auto"
+              BackgroundColor="{StaticResource BackgroundMid}"
+              Padding="10,8"
+              ColumnSpacing="8">
+
+            <!-- Поле ввода -->
+            <Frame Grid.Column="0"
+                   BackgroundColor="{StaticResource BackgroundCard}"
+                   BorderColor="{StaticResource Separator}"
+                   CornerRadius="20"
+                   Padding="4,0">
+                <Entry x:Name="MessageEntry"
+                       Placeholder="Сообщение..."
+                       Text="{Binding MessageText}"
+                       ReturnCommand="{Binding SendCommand}"
+                       ReturnType="Send"
+                       Keyboard="Chat" />
+            </Frame>
+
+            <!-- Кнопка отправки -->
+            <Button Grid.Column="1"
+                    Text="➤"
+                    BackgroundColor="{StaticResource AccentGreen}"
+                    TextColor="{StaticResource BackgroundDark}"
+                    CornerRadius="22"
+                    WidthRequest="44" HeightRequest="44"
+                    Padding="0"
+                    FontSize="18"
+                    Command="{Binding SendCommand}"
+                    IsEnabled="{Binding CanSend}" />
+        </Grid>
+
+    </Grid>
+</ContentPage>

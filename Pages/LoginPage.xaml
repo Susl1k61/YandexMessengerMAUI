@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Файл: Pages/LoginPage.xaml -->
+<!-- Экран входа через Яндекс OAuth -->
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="YandexMessengerMAUI.Pages.LoginPage"
+             Title="Войти">
+
+    <Grid RowDefinitions="*,Auto,*" Padding="32">
+
+        <!-- Верхний блок: логотип и название -->
+        <VerticalStackLayout Grid.Row="0" VerticalOptions="End" Spacing="12">
+            <Label Text="💬" FontSize="72" HorizontalOptions="Center" />
+            <Label Text="Yandex Messenger"
+                   Style="{StaticResource PageTitleStyle}"
+                   FontSize="26"
+                   HorizontalOptions="Center" />
+            <Label Text="Мессенджер на базе Яндекс.Почты"
+                   Style="{StaticResource SecondaryTextStyle}"
+                   HorizontalOptions="Center"
+                   HorizontalTextAlignment="Center" />
+        </VerticalStackLayout>
+
+        <!-- Центральный блок: кнопка входа и ошибки -->
+        <VerticalStackLayout Grid.Row="1" Spacing="16" Margin="0,40">
+
+            <!-- Индикатор загрузки -->
+            <ActivityIndicator IsRunning="{Binding IsBusy}"
+                               IsVisible="{Binding IsBusy}" />
+
+            <!-- Кнопка входа -->
+            <Button Text="🔑  Войти через Яндекс"
+                    Style="{StaticResource PrimaryButtonStyle}"
+                    Command="{Binding LoginCommand}"
+                    IsEnabled="{Binding IsNotBusy}" />
+
+            <!-- Сообщение об ошибке -->
+            <Frame BackgroundColor="#3A1515"
+                   BorderColor="{StaticResource ErrorRed}"
+                   CornerRadius="8"
+                   Padding="14,10"
+                   IsVisible="{Binding HasError}">
+                <Label Text="{Binding ErrorMessage}"
+                       TextColor="{StaticResource ErrorRed}"
+                       FontSize="13"
+                       HorizontalTextAlignment="Center" />
+            </Frame>
+
+        </VerticalStackLayout>
+
+        <!-- Нижний блок: пояснение -->
+        <VerticalStackLayout Grid.Row="2" VerticalOptions="Start" Spacing="6">
+            <Label Text="Используется ваш существующий аккаунт Яндекс.Почты"
+                   Style="{StaticResource SecondaryTextStyle}"
+                   HorizontalOptions="Center"
+                   HorizontalTextAlignment="Center" />
+            <Label Text="Пароль нигде не хранится"
+                   Style="{StaticResource SecondaryTextStyle}"
+                   HorizontalOptions="Center" />
+        </VerticalStackLayout>
+
+    </Grid>
+</ContentPage>

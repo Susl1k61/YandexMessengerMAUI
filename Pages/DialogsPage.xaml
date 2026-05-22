@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Файл: Pages/DialogsPage.xaml -->
+<!-- Список диалогов (главный экран приложения) -->
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:YandexMessengerMAUI.Models"
+             x:Class="YandexMessengerMAUI.Pages.DialogsPage"
+             Title="Чаты">
+
+    <!-- Кастомный заголовок -->
+    <NavigationPage.TitleView>
+        <Grid ColumnDefinitions="*,Auto" Padding="0,0,8,0">
+            <Label Text="💬 Чаты"
+                   Style="{StaticResource PageTitleStyle}"
+                   VerticalOptions="Center"
+                   Margin="16,0,0,0" />
+            <!-- Статус SignalR (маленькая точка) -->
+            <Label Grid.Column="1"
+                   Text="{Binding ConnectionStatus}"
+                   Style="{StaticResource SecondaryTextStyle}"
+                   FontSize="11"
+                   VerticalOptions="Center" />
+        </Grid>
+    </NavigationPage.TitleView>
+
+    <Grid RowDefinitions="Auto,*,Auto">
+
+        <!-- Моё имя + кнопки -->
+        <Grid ColumnDefinitions="*,Auto,Auto"
+              BackgroundColor="{StaticResource BackgroundMid}"
+              Padding="14,8">
+            <Label Grid.Column="0"
+                   Text="{Binding MyUsername, StringFormat='@{0}'}"
+                   Style="{StaticResource SecondaryTextStyle}"
+                   VerticalOptions="Center" />
+            <!-- Новый чат -->
+            <Button Grid.Column="1"
+                    Text="✏️"
+                    BackgroundColor="Transparent"
+                    TextColor="{StaticResource AccentGreen}"
+                    FontSize="20"
+                    Padding="8,4"
+                    Command="{Binding NewChatCommand}" />
+            <!-- Выход -->
+            <Button Grid.Column="2"
+                    Text="⬤"
+                    BackgroundColor="Transparent"
+                    TextColor="{StaticResource TextSecondary}"
+                    FontSize="14"
+                    Padding="8,4"
+                    Command="{Binding LogoutCommand}"
+                    ToolTipProperties.Text="Выйти" />
+        </Grid>
+
+        <!-- Список диалогов -->
+        <RefreshView Grid.Row="1"
+                     IsRefreshing="{Binding IsBusy}"
+                     Command="{Binding RefreshCommand}"
+                     RefreshColor="{StaticResource AccentGreen}">
+            <CollectionView ItemsSource="{Binding Dialogs}"
+                            x:Name="DialogsList"
+                            SelectionMode="None">
+
+                <!-- Пустое состояние -->
+                <CollectionView.EmptyView>
+                    <VerticalStackLayout VerticalOptions="Center"
+                                         HorizontalOptions="Center"
+                                         Spacing="12" Margin="32">
+                        <Label Text="💬" FontSize="48" HorizontalOptions="Center" />
+                        <Label Text="Нет диалогов"
+                               Style="{StaticResource PrimaryTextStyle}"
+                               HorizontalOptions="Center" />
+                        <Label Text="Нажмите ✏️ чтобы начать новый чат"
+                               Style="{StaticResource SecondaryTextStyle}"
+                               HorizontalOptions="Center"
+                               HorizontalTextAlignment="Center" />
+                    </VerticalStackLayout>
+                </CollectionView.EmptyView>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Dialog">
+                        <!-- Элемент диалога -->
+                        <Frame Style="{StaticResource DialogCardStyle}">
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnDialogTapped" />
+                            </Frame.GestureRecognizers>
+                            <Grid ColumnDefinitions="48,*,Auto" ColumnSpacing="12">
+
+                                <!-- Аватар (инициал) -->
+                                <Frame Grid.Column="0"
+                                       BackgroundColor="{StaticResource BackgroundCard}"
+                                       BorderColor="{StaticResource Separator}"
+                                       CornerRadius="24"
+                                       WidthRequest="48" HeightRequest="48"
+                                       Padding="0" HasShadow="False">
+                                    <Label Text="{Binding Username[0], StringFormat='{0}'}"
+                                           TextColor="{StaticResource AccentGreen}"
+                                           FontAttributes="Bold"
+                                           FontSize="20"
+                                           HorizontalOptions="Center"
+                                           VerticalOptions="Center" />
+                                </Frame>
+
+                                <!-- Имя + последнее сообщение -->
+                                <VerticalStackLayout Grid.Column="1"
+                                                     VerticalOptions="Center"
+                                                     Spacing="3">
+                                    <Label Text="{Binding DisplayTitle}"
+                                           Style="{StaticResource PrimaryTextStyle}"
+                                           FontAttributes="Bold"
+                                           LineBreakMode="NoWrap" />
+                                    <Label Text="{Binding LastMessagePreview}"
+                                           Style="{StaticResource SecondaryTextStyle}"
+                                           LineBreakMode="TailTruncation" />
+                                </VerticalStackLayout>
+
+                                <!-- Время + значок непрочитанных -->
+                                <VerticalStackLayout Grid.Column="2"
+                                                     HorizontalOptions="End"
+                                                     Spacing="4">
+                                    <Label Text="{Binding TimeLabel}"
+                                           Style="{StaticResource SecondaryTextStyle}"
+                                           HorizontalOptions="End" />
+                                    <!-- Значок непрочитанных -->
+                                    <Frame BackgroundColor="{StaticResource AccentGreen}"
+                                           CornerRadius="10" Padding="6,2"
+                                           HasShadow="False"
+                                           HorizontalOptions="End"
+                                           IsVisible="{Binding HasUnread}">
+                                        <Label Text="{Binding UnreadCount}"
+                                               TextColor="{StaticResource BackgroundDark}"
+                                               FontSize="11"
+                                               FontAttributes="Bold" />
+                                    </Frame>
+                                </VerticalStackLayout>
+
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </RefreshView>
+
+        <!-- Нижняя панель с ошибкой -->
+        <Frame Grid.Row="2"
+               BackgroundColor="#3A1515"
+               BorderColor="{StaticResource ErrorRed}"
+               Padding="14,8"
+               IsVisible="{Binding HasError}">
+            <Label Text="{Binding ErrorMessage}"
+                   TextColor="{StaticResource ErrorRed}"
+                   FontSize="13"
+                   HorizontalTextAlignment="Center" />
+        </Frame>
+
+    </Grid>
+</ContentPage>
