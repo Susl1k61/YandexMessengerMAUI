@@ -1,6 +1,9 @@
 // Файл: MauiProgram.cs
 // Точка входа MAUI-приложения.
 using Microsoft.Extensions.Logging;
+using Microsoft.Maui;
+using Microsoft.Maui.Controls.Hosting;
+using Microsoft.Maui.Hosting;
 
 namespace YandexMessengerMAUI;
 
@@ -10,7 +13,7 @@ public static class MauiProgram
     {
         var builder = MauiApp.CreateBuilder();
         builder
-            .UseMaui()
+            .UseMauiApp<App>()
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");

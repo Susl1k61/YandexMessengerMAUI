@@ -5,6 +5,7 @@
 using YandexMessengerMAUI.Pages;
 using YandexMessengerMAUI.Services;
 using YandexMessengerMAUI.ViewModels;
+using Microsoft.Maui.Controls;
 
 namespace YandexMessengerMAUI;
 

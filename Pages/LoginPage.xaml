@@ -45,7 +45,7 @@
                        FontSize="13"
                        HorizontalTextAlignment="Center" />
             </Frame>
-
+ 
         </VerticalStackLayout>
 
         <!-- Нижний блок: пояснение -->

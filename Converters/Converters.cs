@@ -2,6 +2,9 @@
 // Конвертеры для привязки данных в XAML.
 
 using System.Globalization;
+using System;
+using Microsoft.Maui.Controls;
+using Microsoft.Maui.Graphics;
 
 namespace YandexMessengerMAUI.Converters;
 
